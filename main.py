@@ -3,10 +3,10 @@ from utils.data_utils import create_data_generators
 from models.autoencoder import AutoencoderSimilarity
 from models.pretrained_cnn import PretrainedCNNFeatureExtractor
 from models.siamese import SiameseNetwork
-from models.clip import CLIPFeatureExtractor
+# from models.clip import CLIPFeatureExtractor
 from models.hashing import HashingSimilarity
 
-data_dir = "./dataset"
+data_dir = "./datasets/caltech-101/"
 train_dir = os.path.join(data_dir, "train")
 val_dir = os.path.join(data_dir, "val")
 
@@ -35,7 +35,7 @@ def main():
 
     # Placeholder for CLIP-based feature extraction
     print("Evaluating CLIP-based feature extraction...")
-    clip_model = CLIPFeatureExtractor()
+    # clip_model = CLIPFeatureExtractor()
 
     # Placeholder for Hashing-based similarity
     print("Using Hashing-based similarity...")

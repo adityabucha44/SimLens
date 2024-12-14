@@ -2,6 +2,7 @@
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, UpSampling2D
 from models.base_model import SimilaritySearchModel
+import PIL
 
 class AutoencoderSimilarity(SimilaritySearchModel):
     def build(self):
