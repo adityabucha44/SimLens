@@ -8,7 +8,7 @@ from tensorflow.keras.models import load_model, Model
 from sklearn.metrics.pairwise import cosine_similarity
 from collections import defaultdict
 from methods import autoencoders,clip,vgg16,resnet,vit,mobilenet
-from evaluate import evaluate_model_top_k_binary
+from evaluate.evaluate import evaluate_model_top_k_binary
 
 
 
