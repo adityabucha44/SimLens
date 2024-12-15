@@ -1,48 +1,79 @@
 import os
-from utils.data_utils import create_data_generators
-from models.autoencoder import AutoencoderSimilarity
-from models.pretrained_cnn import PretrainedCNNFeatureExtractor
-from models.siamese import SiameseNetwork
-# from models.clip import CLIPFeatureExtractor
-from models.hashing import HashingSimilarity
+from utils import create_data_generators
+from utils import train_val_split
+import numpy as np
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
+from tensorflow.keras.applications import ResNet50
+from tensorflow.keras.models import load_model, Model
+from sklearn.metrics.pairwise import cosine_similarity
+from collections import defaultdict
+from methods import autoencoders,clip,vgg16,resnet,vit,mobilenet
+from evaluate import evaluate_model_top_k_binary
 
-data_dir = "./datasets/caltech-101/"
-train_dir = os.path.join(data_dir, "train")
-val_dir = os.path.join(data_dir, "val")
 
-def main():
-    # Prepare data generators
-    train_generator, val_generator = create_data_generators(train_dir, val_dir)
 
-    # Train and evaluate Autoencoder approach
-    print("Training Autoencoder approach...")
-    autoencoder_model = AutoencoderSimilarity()
-    autoencoder_model.build()
-    autoencoder_model.train(train_generator, val_generator)
+dataset_url = "https://data.caltech.edu/records/mzrjq-6wc02/files/caltech-101.zip"
+base_dir = "./datasets"
+extract_to = os.path.join(base_dir)
+source_dir = os.path.join(base_dir, "101_ObjectCategories")
+train_dir = os.path.join(base_dir, "train")
+val_dir = os.path.join(base_dir, "val")
+test_dir=os.path.join(base_dir, "test")
 
-    # Train and evaluate Pre-trained CNN approach
-    print("Training Pre-trained CNN approach...")
-    cnn_model = PretrainedCNNFeatureExtractor()
-    cnn_model.build()
-    cnn_model.train(train_generator, val_generator)
+# Download, Extract, and Split
+train_val_split.download_and_extract(dataset_url, base_dir)
 
-    # Placeholder for Siamese Network training
-    print("Training Siamese Network approach...")
-    siamese_model = SiameseNetwork()
-    siamese_model.build()
-    # Example: train_siamese_pairs should be prepared
-    # siamese_model.train(train_siamese_pairs, val_siamese_pairs)
+if os.path.exists(source_dir):
+    train_val_split.split_data(source_dir, train_dir, val_dir,test_dir)
+else:
+    print(f"Source directory not found: {source_dir}")
 
-    # Placeholder for CLIP-based feature extraction
-    print("Evaluating CLIP-based feature extraction...")
-    # clip_model = CLIPFeatureExtractor()
+print("Train directory:", train_dir)
+print("Validation directory:", val_dir)
 
-    # Placeholder for Hashing-based similarity
-    print("Using Hashing-based similarity...")
-    hashing_model = HashingSimilarity()
-    hashing_model.build()
 
-    print("Training complete. Models saved.")
 
-if __name__ == "__main__":
-    main()
+# Dataset directory
+dataset_dir = "./datasets/test"
+image_paths = []
+labels = []
+
+# Collect image paths and labels
+for folder in os.listdir(dataset_dir):
+    folder_path = os.path.join(dataset_dir, folder)
+    if os.path.isdir(folder_path):
+        for img_file in os.listdir(folder_path):
+            if img_file.endswith((".jpg", ".png")):
+                image_paths.append(os.path.join(folder_path, img_file))
+                labels.append(folder)  # Folder name as the label
+
+
+autoencoders_features=autoencoders.extract_autoencoder_features_batch(image_paths,batch_size=32)
+resnet_features=resnet.extract_resnet_features_batch(image_paths,batch_size=32)
+vgg16_features = vgg16.extract_vgg16_features_batch(image_paths, batch_size=32)
+mobilenet_features = mobilenet.extract_mobilenet_features_batch(image_paths, batch_size=32)
+vit_features = vit.extract_vit_features_batch(image_paths, batch_size=32)
+clip_features = clip.extract_clip_features_batch(image_paths, batch_size=32)
+
+
+# # Print the shapes of the extracted features
+
+# print("Autoencoder features shape:", autoencoders_features.shape)  # Should be (n_samples, n_features)
+# print("ResNet features shape:", resnet_features.shape)  # Should be (n_samples, n_features)
+# print("VGG16 features shape:", vgg16_features.shape)  # Should be (n_samples, n_features)
+# print("MobileNet features shape:", mobilenet_features.shape)  # Should be (n_samples, n_features)
+# print("ViT features shape:", vit_features.shape)  # Should be (n_samples, n_features)
+# print("CLIP features shape:", clip_features.shape)  # Should be (n_samples, n_features)
+
+
+
+
+
+# Evaluate models
+autoencoder_results_top_k_binary = evaluate_model_top_k_binary(autoencoders_features, labels, model_name="Autoencoder", k=5)
+resnet_results_top_k_binary = evaluate_model_top_k_binary(resnet_features, labels, model_name="ResNet", k=5)
+vgg16_results_top_k_binary = evaluate_model_top_k_binary(vgg16_features, labels, model_name="vgg16", k=5)
+mobilenet_results_top_k_binary = evaluate_model_top_k_binary(mobilenet_features, labels, model_name="MobileNet", k=5)
+Vit_results_top_k_binary = evaluate_model_top_k_binary(vit_features, labels, model_name="ViT", k=5)
+clip_results_top_k_binary = evaluate_model_top_k_binary(clip_features, labels, model_name="Clip", k=5)
+

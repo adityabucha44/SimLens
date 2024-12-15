@@ -15,14 +15,14 @@ def create_data_generators(train_dir, val_dir):
 
     train_generator = train_datagen.flow_from_directory(
         train_dir,
-        target_size=(128, 128),
-        batch_size=32,
-        class_mode='input')
+        target_size=(224, 224),
+        batch_size=128,
+        class_mode='categorical')
 
     val_generator = val_datagen.flow_from_directory(
         val_dir,
-        target_size=(128, 128),
-        batch_size=32,
-        class_mode='input')
+        target_size=(224, 224),
+        batch_size=128,
+        class_mode='categorical')
 
     return train_generator, val_generator

@@ -74,23 +74,24 @@ def split_data(source_dir, train_dir, val_dir, test_dir, val_size=0.2, test_size
 
     print("Dataset split completed.")
 
+if __name__ == "__main__":
 
-# Step 3: Run the Complete Workflow
-dataset_url = "https://data.caltech.edu/records/mzrjq-6wc02/files/caltech-101.zip"
-base_dir = "./datasets"
-extract_to = os.path.join(base_dir)
-source_dir = os.path.join(base_dir, "101_ObjectCategories")
-train_dir = os.path.join(base_dir, "train")
-val_dir = os.path.join(base_dir, "val")
-test_dir=os.path.join(base_dir, "test")
+    # Step 3: Run the Complete Workflow
+    dataset_url = "https://data.caltech.edu/records/mzrjq-6wc02/files/caltech-101.zip"
+    base_dir = "./datasets"
+    extract_to = os.path.join(base_dir)
+    source_dir = os.path.join(base_dir, "101_ObjectCategories")
+    train_dir = os.path.join(base_dir, "train")
+    val_dir = os.path.join(base_dir, "val")
+    test_dir=os.path.join(base_dir, "test")
 
-# Download, Extract, and Split
-download_and_extract(dataset_url, base_dir)
+    # Download, Extract, and Split
+    download_and_extract(dataset_url, base_dir)
 
-if os.path.exists(source_dir):
-    split_data(source_dir, train_dir, val_dir,test_dir)
-else:
-    print(f"Source directory not found: {source_dir}")
+    if os.path.exists(source_dir):
+        split_data(source_dir, train_dir, val_dir,test_dir)
+    else:
+        print(f"Source directory not found: {source_dir}")
 
-print("Train directory:", train_dir)
-print("Validation directory:", val_dir)
+    print("Train directory:", train_dir)
+    print("Validation directory:", val_dir)
