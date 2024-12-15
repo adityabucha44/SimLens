@@ -1,5 +1,5 @@
 import os
-from utils import create_data_generators
+from utils import data_generator
 from utils import train_val_split
 import numpy as np
 from tensorflow.keras.preprocessing.image import load_img, img_to_array

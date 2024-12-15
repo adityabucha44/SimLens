@@ -2,3 +2,6 @@ tensorflow
 scikit-learn
 pillow
 matplotlib
+tqdm
+transformers
+torch
