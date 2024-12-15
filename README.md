@@ -102,7 +102,7 @@ Below is an example of similarity search results using the Autoencoder method:
 ---
 
 ## **Results and Analysis**
-A detailed comparison of the methods is included in the [`notebooks/analysis.ipynb`](notebooks/rev_image_search.ipynb.ipynb). Key findings:
+A detailed comparison of the methods is included in the [`notebooks/rev_image_search.ipynb`](notebooks/rev_image_search.ipynb). Key findings:
 - **CLIP** and **ViT** offer superior performance in terms of recall and F1-score.
 - **MobileNet** provides a balance between speed and accuracy, making it suitable for lightweight applications.
 
@@ -116,5 +116,5 @@ A detailed comparison of the methods is included in the [`notebooks/analysis.ipy
 ---
 
 ## **License**
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+This project is licensed under the MIT License. 
 
