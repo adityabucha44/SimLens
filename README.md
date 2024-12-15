@@ -33,12 +33,12 @@ The following methods were implemented for feature extraction:
 
 ## **Feature Extraction**
 Feature extraction methods generate vector representations of images:
-- **Autoencoders**: Latent vectors (dim = X)
-- **ResNet50**: Global Average Pooling (dim = 2048)
-- **VGG16**: Fully connected layer outputs (dim = 4096)
-- **MobileNet**: EfficientNet embeddings (dim = Y)
-- **ViT**: Transformer embeddings (dim = 768)
-- **CLIP**: Text-image similarity embeddings (dim = 512)
+- **Autoencoders**: Latent vectors 
+- **ResNet50**: Global Average Pooling 
+- **VGG16**: Fully connected layer outputs 
+- **MobileNet**: EfficientNet embeddings 
+- **ViT**: Transformer embeddings 
+- **CLIP**: Text-image similarity embeddings 
 
 ---
 
